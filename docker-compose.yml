@@ -9,7 +9,7 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - ./nestjs-mongo:/usr/src/app/
+      - ./nestjs-pos:/usr/src/app/
     working_dir: /usr/src/app
     depends_on:
       - redis

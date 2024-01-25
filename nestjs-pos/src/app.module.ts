@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { RedisModule } from './redis/redis.module';
+import { UserModule } from './user/user.module';
 
 @Module({
-  imports: [RedisModule],
+  imports: [UserModule],
   controllers: [],
   providers: [],
 })

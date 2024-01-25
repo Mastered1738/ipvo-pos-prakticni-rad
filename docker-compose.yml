@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  app:
+    container_name: nestjs-pos
+    image: node:20
+    environment:
+      HTTPS_METHOD: noredirect
+    ports:
+      - 3000:3000
+    volumes:
+      - ./nestjs-mongo:/usr/src/app/
+    working_dir: /usr/src/app
+    depends_on:
+      - redis
+    command: npm run start:dev
+
+  redis:
+    container_name: redis-pos
+    image: redis:latest
+    restart: always
+    ports:
+      - 5000:5000

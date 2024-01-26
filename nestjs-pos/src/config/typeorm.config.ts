@@ -7,7 +7,7 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   username: 'doadmin',
   password: 'AVNS_rCGhkN4b1KFbseXTArU',
   database: 'defaultdb',
-  schema: 'insight',
+  schema: 'torac',
   entities: [__dirname + '/../**/*.entity{.ts,.js}'],
   synchronize: true,
   autoLoadEntities: true,

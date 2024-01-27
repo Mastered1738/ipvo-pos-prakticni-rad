@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { User } from './user.entity';
 import { Customer } from './customer.entity';
+import { StatusEnum } from 'src/enum/status_enum.type';
 
 @Entity({ name: 'Order' })
 export class Order {
@@ -16,22 +17,34 @@ export class Order {
   @Column({ default: () => 'CURRENT_TIMESTAMP', type: 'timestamp' })
   ordered_at: Date;
 
-  @Column({ default: () => 'CURRENT_TIMESTAMP', type: 'timestamp' })
+  @Column({
+    default: () => 'CURRENT_TIMESTAMP',
+    type: 'timestamp',
+    nullable: true,
+  })
   started_production_at: Date;
 
-  @Column({ default: () => 'CURRENT_TIMESTAMP', type: 'timestamp' })
+  @Column({
+    default: () => 'CURRENT_TIMESTAMP',
+    type: 'timestamp',
+    nullable: true,
+  })
   ended_production_at: Date;
 
-  @Column({ default: () => 'CURRENT_TIMESTAMP', type: 'timestamp' })
+  @Column({
+    default: () => 'CURRENT_TIMESTAMP',
+    type: 'timestamp',
+    nullable: true,
+  })
   finished_at: Date;
 
   @Column()
   olive_weight_kg: number;
 
-  @Column()
+  @Column({ nullable: true })
   olive_oil_weight_kg: number;
 
-  @Column()
+  @Column({ nullable: true })
   olive_oil_percentage: number;
 
   @Column()
@@ -72,9 +85,12 @@ export class Order {
   })
   customer: Customer;
 
-  @Column()
+  @Column({ nullable: false, default: 0 })
   order_cost: number;
 
-  @Column()
+  @Column({ default: true })
   customer_has_bottles: boolean;
+
+  @Column({ nullable: false, default: StatusEnum.waiting_for_produciton })
+  status: StatusEnum;
 }

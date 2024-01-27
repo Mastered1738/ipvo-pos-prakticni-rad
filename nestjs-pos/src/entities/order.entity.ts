@@ -71,4 +71,10 @@ export class Order {
     referencedColumnName: 'customer_id',
   })
   customer: Customer;
+
+  @Column()
+  order_cost: number;
+
+  @Column()
+  customer_has_bottles: boolean;
 }

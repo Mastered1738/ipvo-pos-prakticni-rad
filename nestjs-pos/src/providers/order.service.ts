@@ -241,4 +241,26 @@ export class OrderService {
 
     return order;
   }
+
+  async GetAllOrdersByCustomerID(customer_id: number): Promise<Order[]> {
+    return await this.orderRepo.find({
+      relations: ['customer'],
+      where: {
+        customer: {
+          customer_id: customer_id,
+        },
+      },
+      select: {
+        order_id: true,
+        ordered_at: true,
+        olive_weight_kg: true,
+        user_made_order: {
+          user_id: true,
+          username: true,
+          password: false,
+        },
+        status: true,
+      },
+    });
+  }
 }

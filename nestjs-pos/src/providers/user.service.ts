@@ -1,6 +1,7 @@
 import { CACHE_MANAGER, CacheStore } from '@nestjs/cache-manager';
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { LogInDTO } from 'src/dto/log_in.dto';
 import { UserDTO } from 'src/dto/user.dto';
 import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
@@ -32,5 +33,34 @@ export class UserService {
 
   async getAllUsers(): Promise<User[]> {
     return await this.userRepo.find();
+  }
+
+  async getUserByUsername(username: string): Promise<User> {
+    const user = await this.userRepo.findOne({
+      where: {
+        username: username,
+      },
+      select: {
+        user_id: true,
+        username: true,
+        password: false,
+      },
+    });
+
+    return user;
+  }
+
+  async logInUser(loginInfo: LogInDTO): Promise<User> {
+    return await this.userRepo.findOne({
+      where: {
+        username: loginInfo.username,
+        password: loginInfo.password,
+      },
+      select: {
+        user_id: true,
+        username: true,
+        password: false,
+      },
+    });
   }
 }

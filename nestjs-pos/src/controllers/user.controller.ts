@@ -3,6 +3,7 @@ import { UserService } from '../providers/user.service';
 import { User } from 'src/entities/user.entity';
 import { CacheInterceptor, CacheKey, CacheTTL } from '@nestjs/cache-manager';
 import { UserDTO } from 'src/dto/user.dto';
+import { LogInDTO } from 'src/dto/log_in.dto';
 
 @Controller('/user')
 export class UserController {
@@ -19,5 +20,15 @@ export class UserController {
   @Post('/create-user')
   async createUser(@Body() user: UserDTO): Promise<User> {
     return this.userService.createUser(user);
+  }
+
+  @Post('/get-user-by-username')
+  async getUserByUsername(@Body() username: string): Promise<User> {
+    return this.userService.getUserByUsername(username);
+  }
+
+  @Post('/log-in')
+  async logInUser(@Body() loginInfo: LogInDTO): Promise<User> {
+    return this.userService.logInUser(loginInfo);
   }
 }

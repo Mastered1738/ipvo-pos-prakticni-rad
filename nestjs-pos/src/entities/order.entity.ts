@@ -18,7 +18,6 @@ export class Order {
   ordered_at: Date;
 
   @Column({
-    default: () => 'CURRENT_TIMESTAMP',
     type: 'timestamp',
     nullable: true,
   })

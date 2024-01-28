@@ -2,6 +2,7 @@ import { CACHE_MANAGER, CacheStore } from '@nestjs/cache-manager';
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateOrderDTO } from 'src/dto/create_order.dto';
+import { StartProductionOrderDTO } from 'src/dto/start_order.dto';
 import { Order } from 'src/entities/order.entity';
 import { StatusEnum } from 'src/enum/status_enum.type';
 import { Repository } from 'typeorm';
@@ -205,5 +206,23 @@ export class OrderService {
     this.cache.set('all-waiting-orders', waitingOrders);
 
     return order;
+  }
+
+  async startOrder(order: StartProductionOrderDTO): Promise<boolean> {
+    await this.orderRepo.update(order.order_id, {
+      started_production_at: new Date(),
+      user_started_production: {
+        user_id: order.user_started_production,
+      },
+      status: StatusEnum.in_production,
+    });
+
+    const productionOrders = await this.GetAllInProductionOrders();
+    const waitingOrders = await this.getAllWatingOrders();
+
+    this.cache.set('all-in-production-orders', productionOrders);
+    this.cache.set('all-waiting-orders', waitingOrders);
+
+    return true;
   }
 }

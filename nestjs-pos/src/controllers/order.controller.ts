@@ -42,16 +42,25 @@ export class OrderController {
     return this.orderService.GetFinishedOrdersByProductionUserID(user.user_id);
   }
 
+  @UseInterceptors(CacheInterceptor)
+  @CacheKey('today-olive-weight-sum')
+  @CacheTTL(60000)
   @Get('/sum-todays-olive-weight')
   async sumTodaysOliveWeight(): Promise<number> {
     return this.orderService.sumTodaysOliveWeight();
   }
 
+  @UseInterceptors(CacheInterceptor)
+  @CacheKey('today-olive-oil-weight-sum')
+  @CacheTTL(60000)
   @Get('/sum-todays-olive-oil-weight')
   async sumTodaysOliveOilWeight(): Promise<number> {
     return this.orderService.sumTodaysOliveWeight();
   }
 
+  @UseInterceptors(CacheInterceptor)
+  @CacheKey('today-olive-oil-percentage-average')
+  @CacheTTL(60000)
   @Get('/average-todays-olive-oil-percentage')
   async getAverageOliveOilPercentageForToday(): Promise<number> {
     return this.orderService.getAverageOliveOilPercentageForToday();

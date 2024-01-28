@@ -1,6 +1,7 @@
 import { CACHE_MANAGER, CacheStore } from '@nestjs/cache-manager';
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CreateOrderDTO } from 'src/dto/create_order.dto';
 import { Order } from 'src/entities/order.entity';
 import { StatusEnum } from 'src/enum/status_enum.type';
 import { Repository } from 'typeorm';
@@ -181,5 +182,28 @@ export class OrderService {
       })
       .getRawOne()
       .then((result) => +result.average);
+  }
+
+  async createOrder(createOrder: CreateOrderDTO): Promise<Order> {
+    const order = this.orderRepo.create({
+      olive_weight_kg: createOrder.olive_weight_kg,
+      boxes: createOrder.boxes,
+      user_made_order: {
+        user_id: createOrder.user_made_order,
+      },
+      customer: {
+        customer_id: createOrder.customer,
+      },
+      order_cost: createOrder.order_cost,
+      customer_has_bottles: createOrder.customer_has_bottles,
+    });
+
+    await this.orderRepo.save(order);
+
+    const waitingOrders = await this.getAllWatingOrders();
+
+    this.cache.set('all-waiting-orders', waitingOrders);
+
+    return order;
   }
 }

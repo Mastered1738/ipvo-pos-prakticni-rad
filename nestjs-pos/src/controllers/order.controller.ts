@@ -1,5 +1,6 @@
 import { CacheInterceptor, CacheKey, CacheTTL } from '@nestjs/cache-manager';
 import { Body, Controller, Get, Post, UseInterceptors } from '@nestjs/common';
+import { CreateOrderDTO } from 'src/dto/create_order.dto';
 import { UserIdDTO } from 'src/dto/user_id.dto';
 import { Order } from 'src/entities/order.entity';
 import { OrderService } from 'src/providers/order.service';
@@ -64,5 +65,10 @@ export class OrderController {
   @Get('/average-todays-olive-oil-percentage')
   async getAverageOliveOilPercentageForToday(): Promise<number> {
     return this.orderService.getAverageOliveOilPercentageForToday();
+  }
+
+  @Post('/create-order')
+  async createOrder(@Body() newOrder: CreateOrderDTO): Promise<Order> {
+    return this.orderService.createOrder(newOrder);
   }
 }

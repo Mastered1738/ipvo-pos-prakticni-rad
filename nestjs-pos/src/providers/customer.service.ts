@@ -10,4 +10,16 @@ export class CustomerService {
     @InjectRepository(Customer) private customerRepo: Repository<Customer>,
     @Inject(CACHE_MANAGER) private cache: CacheStore,
   ) {}
+
+  async getAllCustomers(): Promise<Customer[]> {
+    return this.customerRepo.find();
+  }
+
+  async getCustomerByName(name_surname: string): Promise<Customer[]> {
+    return this.customerRepo.find({
+      where: {
+        name_surname: name_surname,
+      },
+    });
+  }
 }

@@ -1,5 +1,6 @@
 import { CacheInterceptor, CacheKey, CacheTTL } from '@nestjs/cache-manager';
-import { Controller, Post, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseInterceptors } from '@nestjs/common';
+import { UserIdDTO } from 'src/dto/user_id.dto';
 import { Order } from 'src/entities/order.entity';
 import { OrderService } from 'src/providers/order.service';
 
@@ -8,10 +9,51 @@ export class OrderController {
   constructor(private orderService: OrderService) {}
 
   @UseInterceptors(CacheInterceptor)
-  @Post('/get-waiting-orders')
+  @Get('/get-waiting-orders')
   @CacheKey('all-waiting-orders')
   @CacheTTL(60000)
   async getAllWaitingOrders(): Promise<Order[]> {
     return this.orderService.getAllWatingOrders();
+  }
+
+  @UseInterceptors(CacheInterceptor)
+  @Get('/get-in-production-orders')
+  @CacheKey('all-in-production-orders')
+  @CacheTTL(60000)
+  async GetAllInProductionOrders(): Promise<Order[]> {
+    return this.orderService.GetAllInProductionOrders();
+  }
+
+  @UseInterceptors(CacheInterceptor)
+  @Get('/get-finished-orders')
+  @CacheKey('all-in-production-orders')
+  @CacheTTL(60000)
+  async GetAllFinishedOrders(): Promise<Order[]> {
+    return this.orderService.GetFinishedOrders();
+  }
+
+  @UseInterceptors(CacheInterceptor)
+  @Post('/get-finished-orders-by-production-user-id')
+  @CacheKey('finished-orders-by-production-user-id')
+  @CacheTTL(60000)
+  async GetFinishedOrdersByProductionUserID(
+    @Body() user: UserIdDTO,
+  ): Promise<Order[]> {
+    return this.orderService.GetFinishedOrdersByProductionUserID(user.user_id);
+  }
+
+  @Get('/sum-todays-olive-weight')
+  async sumTodaysOliveWeight(): Promise<number> {
+    return this.orderService.sumTodaysOliveWeight();
+  }
+
+  @Get('/sum-todays-olive-oil-weight')
+  async sumTodaysOliveOilWeight(): Promise<number> {
+    return this.orderService.sumTodaysOliveWeight();
+  }
+
+  @Get('/average-todays-olive-oil-percentage')
+  async getAverageOliveOilPercentageForToday(): Promise<number> {
+    return this.orderService.getAverageOliveOilPercentageForToday();
   }
 }

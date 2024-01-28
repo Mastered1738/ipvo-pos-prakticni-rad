@@ -25,14 +25,12 @@ export class Order {
   started_production_at: Date;
 
   @Column({
-    default: () => 'CURRENT_TIMESTAMP',
     type: 'timestamp',
     nullable: true,
   })
   ended_production_at: Date;
 
   @Column({
-    default: () => 'CURRENT_TIMESTAMP',
     type: 'timestamp',
     nullable: true,
   })

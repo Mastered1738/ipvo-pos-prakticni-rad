@@ -225,4 +225,20 @@ export class OrderService {
 
     return true;
   }
+
+  async getOrderByOrderID(order_id: number): Promise<Order> {
+    const order = await this.orderRepo.findOne({
+      where: {
+        order_id: order_id,
+      },
+      select: {
+        order_id: true,
+        ordered_at: true,
+        olive_weight_kg: true,
+        started_production_at: true,
+      },
+    });
+
+    return order;
+  }
 }

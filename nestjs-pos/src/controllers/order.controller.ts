@@ -14,6 +14,7 @@ import { Order } from 'src/entities/order.entity';
 import { OrderService } from 'src/providers/order.service';
 import { get_order_by_id_DTO } from 'src/dto/get_order_by_id.dto';
 import { customer_id_DTO } from 'src/dto/customer_id.dto';
+import { DailyMetricDTO } from 'src/dto/daily_metric.dto';
 
 @Controller('/orders')
 export class OrderController {
@@ -99,5 +100,18 @@ export class OrderController {
     @Body() customer: customer_id_DTO,
   ): Promise<Order[]> {
     return this.orderService.GetAllOrdersByCustomerID(customer.customer_id);
+  }
+
+  @Post('/daily_metrics')
+  async getDailyMetrics(): Promise<any> {
+    const dailyMetrics: DailyMetricDTO = {
+      total_processed_olives: await this.orderService.sumTodaysOliveWeight(),
+      total_oil_made: await this.orderService.sumTodaysOliveOilWeight(),
+      analyzed_at_time: new Date(),
+      avarage_oil_percentage:
+        await this.orderService.getAverageOliveOilPercentageForToday(),
+    };
+
+    return dailyMetrics;
   }
 }

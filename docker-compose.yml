@@ -14,6 +14,8 @@ services:
     depends_on:
       - redis
     command: npm run start:dev
+    networks:
+      - ipvo_network
 
   redis:
     container_name: redis-pos
@@ -21,3 +23,10 @@ services:
     restart: always
     ports:
       - 5000:5000
+    networks:
+    - ipvo_network
+
+networks:
+  ipvo_network:
+    driver: bridge
+    external: true

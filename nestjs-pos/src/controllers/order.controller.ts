@@ -45,6 +45,14 @@ export class OrderController {
   }
 
   @UseInterceptors(CacheInterceptor)
+  @Get('/get-all-ready-for-customer-orders')
+  @CacheKey('all-ready-for-customer-orders')
+  @CacheTTL(60000)
+  async GetAllReadyForCustomerOrders(): Promise<Order[]> {
+    return this.orderService.GetReadyForCustomerOrders();
+  }
+
+  @UseInterceptors(CacheInterceptor)
   @Post('/get-finished-orders-by-production-user-id')
   @CacheKey('finished-orders-by-production-user-id')
   @CacheTTL(60000)

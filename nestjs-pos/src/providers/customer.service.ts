@@ -15,8 +15,8 @@ export class CustomerService {
     return this.customerRepo.find();
   }
 
-  async getCustomerByName(name_surname: string): Promise<Customer[]> {
-    return this.customerRepo.find({
+  async getCustomerByName(name_surname: string): Promise<Customer> {
+    return this.customerRepo.findOne({
       where: {
         name_surname: name_surname,
       },

@@ -52,6 +52,7 @@ export class UserService {
 
   async logInUser(loginInfo: LogInDTO): Promise<User> {
     return await this.userRepo.findOne({
+      relations: ['user_type'],
       where: {
         username: loginInfo.username,
         password: loginInfo.password,
@@ -60,6 +61,9 @@ export class UserService {
         user_id: true,
         username: true,
         password: false,
+        user_type: {
+          user_type_id: true,
+        },
       },
     });
   }

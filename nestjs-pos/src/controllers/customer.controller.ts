@@ -22,7 +22,7 @@ export class CustomerController {
   @CacheTTL(60000)
   async getCustomerByName(
     @Body() name_surname: NameSurnameDTO,
-  ): Promise<Customer[]> {
+  ): Promise<Customer> {
     return this.customerService.getCustomerByName(name_surname.name_surname);
   }
 }
